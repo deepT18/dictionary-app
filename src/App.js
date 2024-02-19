@@ -22,14 +22,23 @@ function App() {
     setDefination("")
     const searchTerm = text.trim().toLowerCase();
 
-    // Find the word in the dictionary
     const foundWord = dictionary.find(item => item.word.toLowerCase() === searchTerm);
 
     if (foundWord) {
       setDefination(foundWord.meaning);
-    } else {
-      setDefination("Word not found in the dictionary");
+      return;
     }
+    
+
+    setDefination((prevDefination) => {
+      if (prevDefination === "") {
+        return "Word not found in the dictionary.";
+      }
+      
+      return prevDefination;
+    });
+
+
   }
   return (
     <div className="App">
