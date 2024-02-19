@@ -1,52 +1,59 @@
-import logo from './logo.svg';
-import './App.css';
-import React,{useState} from 'react';
-
-
-const dictionary=[
-
-  { word: "React", meaning: "A JavaScript library for building user interfaces." },
-
-  { word: "Component", meaning: "A reusable building block in React." },
-
-  { word: "State", meaning: "An object that stores data for a component." }
-
-]
-
+import { useState } from "react";
 
 function App() {
-  const [text,setText]=useState("")
-  const [defination,setDefination]=useState("")
-  const handleChange=()=>{
+  const [text, setText] = useState("");
+  const [definition, setDefinition] = useState("");
 
-    setDefination("")
-    const searchTerm = text.trim().toLowerCase();
+  const findInDictionary = () => {
+    setDefinition("");
 
-    const foundWord = dictionary.find(item => item.word.toLowerCase() === searchTerm);
+    const dictionary = [
+      {
+        word: "React",
+        meaning: "A JavaScript library for building user interfaces.",
+      },
+      { word: "Component", meaning: "A reusable building block in React." },
+      { word: "State", meaning: "An object that stores data for a component." },
+    ];
 
-    if (foundWord) {
-      setDefination(foundWord.meaning);
-      return;
+    const lowerCaseSearchWord = text.toLowerCase();
+
+    for (const entry of dictionary) {
+      const lowerCaseDictionaryWord = entry.word.toLowerCase();
+
+      if (lowerCaseSearchWord === lowerCaseDictionaryWord) {
+        setDefinition(entry.meaning);
+        return;
+      }
     }
-    
 
-    setDefination((prevDefination) => {
-      if (prevDefination === "") {
+    setDefinition((prevWordMeaning) => {
+      if (prevWordMeaning === "") {
         return "Word not found in the dictionary.";
       }
-      
-      return prevDefination;
+      return prevWordMeaning;
     });
+  };
 
-
-  }
   return (
-    <div className="App">
+    <div>
       <h1>Dictionary App</h1>
-      <input type="text" onChange={(e)=>setText(e.target.value)}/>
-      <button onClick={handleChange}>Search</button>
-      <h3><strong>Definition:</strong></h3>
-      <p>{defination}</p>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          findInDictionary();
+        }}
+      >
+        <input
+          type="text"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Search for a word"
+        />
+        <button type="submit">Submit</button>
+      </form>
+      <h3 style={{ marginTop: "0px" }}>Definition:</h3>
+      <p>{definition}</p>
     </div>
   );
 }
